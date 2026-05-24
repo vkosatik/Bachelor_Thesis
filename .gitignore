@@ -25,6 +25,6 @@ bin/
 
 ### VS Code ###
 .vscode/
+dataset/anonymous_60k_user_info
 
-### Mac OS ###
 .DS_Store
