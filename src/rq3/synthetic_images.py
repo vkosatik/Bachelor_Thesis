@@ -23,19 +23,41 @@ HAMMING_THRESH = 10   # strict end of 6-10 range used in literature
 
 
 def download_images():
+    import fiftyone as fo
     import fiftyone.zoo as foz
+    from fiftyone import ViewField as F
 
-    print(f"Downloading up to {MAX_SAMPLES} Forest images from Open Images v7...")
+    print(f"Downloading up to {MAX_SAMPLES * 3} Tree images (will filter to tree-dominant)...")
     dataset = foz.load_zoo_dataset(
         "open-images-v7",
         split="train",
         label_types=["detections"],
-        classes=["Forest"],
-        max_samples=MAX_SAMPLES,
+        classes=["Tree"],
+        max_samples=MAX_SAMPLES * 3,   # oversample before filtering
         dataset_name="rq3_forest_raw",
         overwrite=True,
     )
-    return dataset
+
+    # Keep only images where at least one tree box covers ≥40% of image area.
+    # Bounding boxes in Open Images are normalised [x, y, w, h] relative to image dims,
+    # so w*h gives the fraction of image area covered by the box.
+    dominant_tree_view = dataset.filter_labels(
+        "ground_truth",
+        (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.40),
+    ).match(F("ground_truth.detections").length() > 0)
+
+    n_after = len(dominant_tree_view)
+    print(f"  {n_after} images with tree covering ≥40% of image area")
+
+    if n_after < MAX_SAMPLES:
+        print(f"  WARNING: only {n_after} dominant-tree images (need {MAX_SAMPLES}). Lowering threshold to 0.25...")
+        dominant_tree_view = dataset.filter_labels(
+            "ground_truth",
+            (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.25),
+        ).match(F("ground_truth.detections").length() > 0)
+        print(f"  {len(dominant_tree_view)} images at ≥25% threshold")
+
+    return dominant_tree_view
 
 
 def collect_image_paths(dataset):
@@ -92,7 +114,7 @@ def main():
     kept = deduplicate(hashes)
 
     if len(kept) < 2000:
-        print(f"WARNING: only {len(kept)} images after dedup — need ≥2000 for full parameter grid.")
+        print(f"WARNING: only {len(kept)} images after dedup — need ≥2000 for full 1parameter grid.")
         print("Consider increasing MAX_SAMPLES or adding 'Tree' as a second class.")
     else:
         print(f"OK: {len(kept)} images available (need 2000 max).")
