@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
@@ -166,7 +167,7 @@ for bar in bars:
              f"{pct:.1f}%", ha="center", va="bottom", fontsize=8)
 
 # ── Save ───────────────────────────────────────────────────────────────────────
-out_path = "/dataset_analysis/human_analysis.png"
+out_path = Path(__file__).parent / "human_analysis.png"
 plt.savefig(out_path, dpi=150, bbox_inches="tight")
 print(f"Saved → {out_path}")
 

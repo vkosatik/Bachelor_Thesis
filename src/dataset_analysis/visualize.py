@@ -1,5 +1,6 @@
 import csv
 import json
+from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
@@ -196,7 +197,7 @@ fig.text(0.5, 0.01,
          ha="center", fontsize=8, color="gray")
 
 # ── Save & show ───────────────────────────────────────────────────────────────
-out_path = "/dataset_analysis/bot_analysis.png"
+out_path = Path(__file__).parent / "bot_analysis.png"
 plt.savefig(out_path, dpi=150, bbox_inches="tight")
 print(f"Saved → {out_path}")
 

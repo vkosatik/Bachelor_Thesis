@@ -2,7 +2,7 @@ import csv
 from collections import Counter
 from pathlib import Path
 
-ROOT         = Path(__file__).parent.parent
+ROOT         = Path(__file__).parent.parent.parent
 ACCOUNTS_CSV = ROOT / "dataset" / "anonymous_60k_user_info" / "accounts_info_60k_anonymized.csv"
 LABELED_CSV  = ROOT / "dataset" / "anonymous_60k_user_info" / "12k_labeled_anonymized.csv"
 IMAGES_DIR   = Path("/Volumes/Samsung PSSD T7 Media/FediData/raw_images")

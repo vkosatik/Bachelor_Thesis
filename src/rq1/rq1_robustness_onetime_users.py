@@ -41,7 +41,8 @@ def main():
 
     # use the same number of disconnected pairs for a fair comparison
     n = len(keep_conn)
-    keep_disc = list(range(n))  # first n disconnected pairs (already randomly sampled)
+    rng = np.random.default_rng(42)
+    keep_disc = rng.choice(len(disc_pairs), size=n, replace=False).tolist()
 
     print(f"Full connected pairs:    {len(conn_pairs):,}")
     print(f"One-timer pairs kept:    {n:,}  ({100*n/len(conn_pairs):.1f}% of original)")

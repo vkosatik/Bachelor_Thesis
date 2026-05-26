@@ -60,10 +60,13 @@ def main():
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device).eval()
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-    acct_dirs = sorted(
-        d for d in IMAGES_DIR.iterdir()
-        if d.is_dir() and d.name != "staging" and int(d.name) >= SYNTHETIC_ID_START
-    )
+    def is_synth_dir(d):
+        try:
+            return d.is_dir() and int(d.name) >= SYNTHETIC_ID_START
+        except ValueError:
+            return False
+
+    acct_dirs = sorted(d for d in IMAGES_DIR.iterdir() if is_synth_dir(d))
     print(f"Found {len(acct_dirs)} synthetic account directories")
 
     all_embeddings = []
