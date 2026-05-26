@@ -57,7 +57,7 @@ def main():
                   colors=HNSW_COLORS, label_prefix="HNSW", param_name="M")
 
     ax.axvline(flat_qps, color=FLAT_COLOR, linestyle="--", linewidth=1.5,
-               zorder=5, label=f"Flat (exact)")
+               zorder=5, label=f"IndexFlatIP (brute-force)")
 
     ax.axhline(TARGET_RECALL, color="#E53935", linestyle="--", linewidth=1.2,
                label=f"{int(TARGET_RECALL*100)}% recall target")
