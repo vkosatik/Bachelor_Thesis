@@ -12,7 +12,7 @@ from tqdm import tqdm
 from transformers import CLIPModel, CLIPProcessor
 
 DRIVE      = Path("/Volumes/Samsung PSSD T7 Media/FediData")
-IMG_DIR    = DRIVE / "images"
+IMG_DIR    = DRIVE / "raw_images"
 OUT_DIR    = DRIVE / "embeddings"
 OUT_NPZ    = OUT_DIR / "embeddings_60k.npz"
 CHECKPOINT = OUT_DIR / "embeddings_60k_checkpoint.npz"

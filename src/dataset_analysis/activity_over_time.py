@@ -1,12 +1,13 @@
 import csv
 import json
+from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 from datetime import datetime
 from collections import defaultdict
 
-DATA_DIR = "/dataset/anonymous_60k_user_info"
+DATA_DIR = Path(__file__).parent.parent.parent / "dataset" / "anonymous_60k_user_info"
 
 # ── Load bot flags ─────────────────────────────────────────────────────────────
 print("Loading accounts...")
@@ -116,7 +117,7 @@ ax3.legend(fontsize=9)
 ax3.tick_params(labelsize=8)
 
 # ── Save ───────────────────────────────────────────────────────────────────────
-out = "/src/activity_over_time.png"
+out = Path(__file__).parent / "activity_over_time.png"
 plt.savefig(out, dpi=150, bbox_inches="tight")
 print(f"Saved → {out}")
 

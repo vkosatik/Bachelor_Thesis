@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 from collections import defaultdict
 
-DATA_DIR = "/dataset/anonymous_60k_user_info"
+DATA_DIR = Path(__file__).parent.parent.parent / "dataset" / "anonymous_60k_user_info"
 
 # ── Load accounts ──────────────────────────────────────────────────────────────
 print("Loading accounts...")

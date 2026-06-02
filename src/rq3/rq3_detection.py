@@ -49,7 +49,7 @@ FOLLOW_RATES  = [0.0, 0.3, 0.6]
 def load_real_vectors():
     print("Loading pre-computed real user vectors...")
     data = np.load(REAL_EMBEDDINGS)
-    uids, embs = data["user_ids"], data["embeddings"]
+    uids, embs = data["user_ids"], data["user_vectors"]
     vectors = {int(uid): embs[i] for i, uid in enumerate(uids)}
     print(f"  {len(vectors):,} real users")
     return vectors
