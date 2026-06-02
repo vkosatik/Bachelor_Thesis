@@ -116,7 +116,7 @@ ax3.legend(fontsize=9)
 ax3.tick_params(labelsize=8)
 
 # ── Save ───────────────────────────────────────────────────────────────────────
-out = "/Users/vojtechkosatik/Documents/MetaProjects/Bachelor_Thesis/src/activity_over_time.png"
+out = "/src/activity_over_time.png"
 plt.savefig(out, dpi=150, bbox_inches="tight")
 print(f"Saved → {out}")
 

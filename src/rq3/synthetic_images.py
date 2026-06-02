@@ -1,11 +1,5 @@
-# Download forest images from Open Images v7, pHash-deduplicate, save to staging dir.
-# Target: 2100 images downloaded → ≥2000 after dedup (need 100 accounts × 20 images max).
-#
-# Dedup rationale: images are distributed across different synthetic accounts. Any two
-# images within Hamming ≤ 10 that land in different accounts would be caught by pHash
-# detection, contaminating the CLIP-vs-pHash comparison. We remove those pairs here so
-# that pHash recall near-zero is a genuine finding, not an artefact of lucky image choice.
-# Threshold 10 is the strict end of the 6-10 range used in the literature.
+# Download forest images from Open Images v7, save to staging dir (no deduplication).
+# Target: 2100 images (need 100 accounts × 20 images max).
 #
 # Output: /Volumes/Samsung PSSD T7 Media/RQ3_Synthetic/images/staging/
 
@@ -33,7 +27,7 @@ def download_images():
         split="train",
         label_types=["detections"],
         classes=["Tree"],
-        max_samples=MAX_SAMPLES * 3,   # oversample before filtering
+        max_samples=MAX_SAMPLES * 5,   # oversample before filtering so we're sure have enough
         dataset_name="rq3_forest_raw",
         overwrite=True,
     )
@@ -43,19 +37,14 @@ def download_images():
     # so w*h gives the fraction of image area covered by the box.
     dominant_tree_view = dataset.filter_labels(
         "ground_truth",
-        (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.40),
+        (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.60),
     ).match(F("ground_truth.detections").length() > 0)
 
     n_after = len(dominant_tree_view)
-    print(f"  {n_after} images with tree covering ≥40% of image area")
+    print(f"  {n_after} images with tree covering ≥60% of image area")
 
     if n_after < MAX_SAMPLES:
-        print(f"  WARNING: only {n_after} dominant-tree images (need {MAX_SAMPLES}). Lowering threshold to 0.25...")
-        dominant_tree_view = dataset.filter_labels(
-            "ground_truth",
-            (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.25),
-        ).match(F("ground_truth.detections").length() > 0)
-        print(f"  {len(dominant_tree_view)} images at ≥25% threshold")
+        raise RuntimeError(f"Only {n_after} images at ≥60% threshold — need {MAX_SAMPLES}. Increase MAX_SAMPLES.")
 
     return dominant_tree_view
 
@@ -110,16 +99,14 @@ def copy_to_staging(paths):
 def main():
     dataset = download_images()
     paths = collect_image_paths(dataset)
-    hashes = compute_phashes(paths)
-    kept = deduplicate(hashes)
 
-    if len(kept) < 2000:
-        print(f"WARNING: only {len(kept)} images after dedup — need ≥2000 for full 1parameter grid.")
+    if len(paths) < 2000:
+        print(f"WARNING: only {len(paths)} images — need ≥2000 for full parameter grid.")
         print("Consider increasing MAX_SAMPLES or adding 'Tree' as a second class.")
     else:
-        print(f"OK: {len(kept)} images available (need 2000 max).")
+        print(f"OK: {len(paths)} images available (need 2000 max).")
 
-    copy_to_staging(kept)
+    copy_to_staging(paths)
 
 
 if __name__ == "__main__":

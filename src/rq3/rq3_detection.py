@@ -35,7 +35,7 @@ OUT_CSV            = Path(__file__).parent / "rq3_results.csv"
 SYNTHETIC_ID_START = 100_000
 CLIP_THRESH        = 0.787   # RQ1 μ_conn (mean pooling)
 PHASH_THRESH       = 10      # Hamming bits
-K_NEIGHBOURS       = 120     # query more than max n_accounts to catch all synthetic neighbours
+K_NEIGHBOURS       = 500     # wide enough to catch synthetic peers despite real-user displacement
 HNSW_M             = 16
 HNSW_EF_SEARCH     = 32
 

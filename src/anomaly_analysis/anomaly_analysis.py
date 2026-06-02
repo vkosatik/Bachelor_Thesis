@@ -1,4 +1,4 @@
-# Anomaly analysis: real disconnected user pairs flagged by CLIP+FAISS.
+    # Anomaly analysis: real disconnected user pairs flagged by CLIP+FAISS.
 #
 # Loads the 10k original RQ1 disconnected pairs alongside their mean-pool
 # cosine similarities, annotates each pair as same-instance or cross-instance,
@@ -97,7 +97,7 @@ def main():
     # ── plot ──────────────────────────────────────────────────────────────────
 
     fig, axes = plt.subplots(1, 3, figsize=(14, 5))
-    fig.suptitle("Anomaly Analysis: Real Disconnected Pairs Flagged by CLIP+FAISS",
+    fig.suptitle("False Positives Analysis: Real Disconnected Pairs Flagged",
                  fontsize=12, fontweight="bold")
 
     # Panel 1: similarity distribution (all disconnected, flagged highlighted)

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 DRIVE      = Path("/Volumes/Samsung PSSD T7 Media/FediData/embeddings")
-IN_NPZ     = DRIVE / "embeddings_60k.npz"
+IN_NPZ     = DRIVE / "embeddings_6  0k.npz"
 OUT_NPZ    = DRIVE / "user_vectors_60k.npz"
 
 
@@ -33,7 +33,7 @@ def main():
     user_matrix, unique_users = build_user_vectors(embeddings, user_ids)
     print(f"  user_matrix shape: {user_matrix.shape}")
 
-    np.savez(OUT_NPZ, user_vectors=user_matrix, user_ids=unique_users)
+    np.savez(OUT_NPZ, embeddings=user_matrix, user_ids=unique_users)
     print(f"Saved to {OUT_NPZ}")
 
 

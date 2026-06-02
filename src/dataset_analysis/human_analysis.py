@@ -6,7 +6,7 @@ import numpy as np
 from datetime import datetime
 from collections import Counter
 
-DATA_DIR = "/Users/vojtechkosatik/Downloads/anonymous_60k_user_info"
+DATA_DIR = "/dataset/anonymous_60k_user_info"
 
 # ── Load human accounts only ───────────────────────────────────────────────────
 print("Loading accounts...")
