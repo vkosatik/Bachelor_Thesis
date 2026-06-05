@@ -1,3 +1,4 @@
+# makes the bot_analysis plot focusing on analysis of how many bots we have and what's their behavior
 import csv
 import json
 from pathlib import Path
@@ -48,7 +49,7 @@ with open(f"{DATA_DIR}/edge_60k_anonymized.csv") as f:
 
 # ── Prepare activity arrays ────────────────────────────────────────────────────
 def clip99(arr):
-    """Clip to 99th percentile to suppress extreme outliers for display."""
+    """Clip to 99th percentile to leave out extreme outliers for display."""
     p99 = np.percentile(arr, 99)
     return np.clip(arr, 0, p99)
 

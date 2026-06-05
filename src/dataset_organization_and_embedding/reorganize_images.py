@@ -1,6 +1,6 @@
-# Reorganize flat 60k_jpg dir into per-user subdirs
+# Reorganize flat 60k_jpg dir into per-user subdirs - ran only once when I pulled from fedidata
+# all images and got a single flat dir
 # images named a_b_c.jpg where a=user index, b=post index, c=image index
-# usage: python reorganize_images.py [--dry-run]
 
 import os
 import sys

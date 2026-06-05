@@ -1,3 +1,4 @@
+# creates plot for rq1 visualizing the distribution shifts of similarity between the 3 tested techniques
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt

@@ -1,6 +1,6 @@
-# Create synthetic IO accounts and edges from the deduped staging pool.
+# Create synthetic IO accounts and edges from the staging pool.
 #
-# Phase 1 — accounts: sample images from staging, distribute to per-account dirs.
+# Phase 1 — accounts: sample images from staging, distribute to per-account dirs. (same structure with fake numbers like on fedidata)
 # Phase 2 — edges: intra-group follow edges at given rate + inter-group follows
 #            to real FediData accounts (makes synthetic accounts look embedded).
 #

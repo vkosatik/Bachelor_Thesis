@@ -1,13 +1,12 @@
-    # Anomaly analysis: real disconnected user pairs flagged by CLIP+FAISS.
-#
+# This is a script for Anomaly analysis: real disconnected user pairs flagged by our CLIP+FAISS pipeline
 # Loads the 10k original RQ1 disconnected pairs alongside their mean-pool
 # cosine similarities, annotates each pair as same-instance or cross-instance,
-# then characterises the 2040 pairs (20.4%) that exceed the RQ1 detection
+# then characterizes the 2040 pairs (20.4%) that exceed the RQ1 detection
 # threshold (0.787).
 #
 # Outputs:
-#   src/anomaly_analysis/anomaly_results.csv   — per-pair table with sim + flags
-#   src/anomaly_analysis/anomaly_plot.png      — 3-panel figure
+#   src/anomaly_analysis/anomaly_results.csv   — per-pair table with similarity + flag
+#   src/anomaly_analysis/anomaly_plot.png
 
 import csv
 from pathlib import Path
@@ -23,10 +22,8 @@ RQ1_RESULTS     = ROOT / "src" / "rq1" / "rq1_results.npz"
 OUT_CSV         = Path(__file__).parent / "anomaly_results.csv"
 OUT_PNG         = Path(__file__).parent / "anomaly_plot.png"
 
-CLIP_THRESH = 0.787   # RQ1 μ_conn (mean pooling)
+CLIP_THRESH = 0.787   # RQ1 mean of connected using mean pooling
 
-
-# ── load ──────────────────────────────────────────────────────────────────────
 
 def load_instance_map():
     """row_index → instance string. Pair CSVs use row indices into accounts CSV."""

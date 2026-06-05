@@ -1,6 +1,6 @@
-# Aggregates per-image CLIP embeddings into per-user mean-pooled vectors.
+# Converts per-image CLIP embeddings into per-user mean-pooled vectors.
 # Input:  embeddings_60k.npz  (output of embed_clip_60k.py)
-# Output: user_vectors_60k.npz  — required by rq3_detection.py
+# Output: user_vectors_60k.npz  — needed for rq3_detection.py
 
 from pathlib import Path
 

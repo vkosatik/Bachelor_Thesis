@@ -1,7 +1,7 @@
 # Sample 10k connected and 10k disconnected user pairs for RQ1
-# both sets only include users with at least MIN_IMAGES images
+# both sets only include users with at least MIN_IMAGES (5) images
 # connected = actual edges from the graph, disconnected = random non-edge pairs
-# disconnected pool is restricted to users who appear in at least one valid edge
+# disconnected pool is restricted to users who appear in at least one valid edge to avoid lurkers
 # (same population as connected pairs, just not paired with each other)
 
 import csv

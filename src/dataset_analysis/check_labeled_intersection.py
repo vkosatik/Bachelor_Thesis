@@ -1,3 +1,5 @@
+# sanity check whether we have enough images on disk of labeled users who have enough images
+# uses the human-made labeled mentioned in fedidata paper
 import csv
 from collections import Counter
 from pathlib import Path

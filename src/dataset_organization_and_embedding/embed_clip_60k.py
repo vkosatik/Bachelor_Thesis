@@ -1,6 +1,8 @@
 # CLIP ViT-B/32 embeddings for the full 60k FediData dataset
 # stores per-image embeddings (not per-user) so we keep full granularity
-# checkpoints every 500 users so interrupted runs can resume
+# checkpoints every 500 users so interrupted runs can resume - IMPORTANT!! The script itself took me
+# hours on M2 16GB memory
+# also uses batches of 64 to avoid memory overflow
 
 import argparse
 from pathlib import Path
@@ -23,6 +25,7 @@ CHECKPOINT_EVERY = 500
 
 
 def get_device():
+    # relevant if ran on another device
     if torch.backends.mps.is_available():
         print("Using MPS (Apple Silicon)")
         return torch.device("mps")
@@ -91,6 +94,7 @@ def main(dry_run=False):
     )
     print(f"Found {len(user_dirs):,} user directories")
 
+    # testing paths - prints first 5 users and image filenames
     if dry_run:
         print("DRY RUN — showing first 5 users\n")
         for d in user_dirs[:5]:
@@ -155,6 +159,7 @@ def main(dry_run=False):
             since_checkpoint = 0
 
     embeddings_matrix = np.stack(embeddings).astype(np.float32)
+    # final NPZ file
     np.savez(
         OUT_NPZ,
         embeddings=embeddings_matrix,
@@ -172,7 +177,6 @@ def main(dry_run=False):
     if CHECKPOINT.exists():
         CHECKPOINT.unlink()
         print("Checkpoint removed.")
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

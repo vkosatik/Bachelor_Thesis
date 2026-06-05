@@ -1,6 +1,6 @@
-# Download forest images from Open Images v7, save to staging dir (no deduplication).
-# Target: 2100 images (need 100 accounts × 20 images max).
-#
+# Downloads forest images from Open Images v7, save to staging dir so we filter from it based on
+# Box (tree) cover of the total image area
+# Target number of images: 2100 (we need 100 accounts × 20 images max for test scenario).
 # Output: /Volumes/Samsung PSSD T7 Media/RQ3_Synthetic/images/staging/
 
 import shutil
@@ -13,8 +13,6 @@ from tqdm import tqdm
 DRIVE          = Path("/Volumes/Samsung PSSD T7 Media/RQ3_Synthetic")
 STAGING_DIR    = DRIVE / "images" / "staging"
 MAX_SAMPLES    = 2100
-HAMMING_THRESH = 10   # strict end of 6-10 range used in literature
-
 
 def download_images():
     import fiftyone as fo
@@ -34,7 +32,7 @@ def download_images():
 
     # Keep only images where at least one tree box covers ≥40% of image area.
     # Bounding boxes in Open Images are normalised [x, y, w, h] relative to image dims,
-    # so w*h gives the fraction of image area covered by the box.
+    # so w*h gives the fraction of image area covered by the box which we use for the filtering
     dominant_tree_view = dataset.filter_labels(
         "ground_truth",
         (F("label") == "Tree") & ((F("bounding_box")[2] * F("bounding_box")[3]) >= 0.60),
@@ -57,34 +55,6 @@ def collect_image_paths(dataset):
             paths.append(p)
     print(f"Collected {len(paths)} valid images")
     return paths
-
-
-def compute_phashes(paths):
-    hashes = {}
-    print("Computing pHashes...")
-    for p in tqdm(paths, unit="img"):
-        try:
-            hashes[p] = imagehash.phash(Image.open(p).convert("RGB"))
-        except Exception:
-            pass  # skip corrupt images
-    return hashes
-
-
-def deduplicate(hashes):
-    paths = list(hashes.keys())
-    to_remove = set()
-    print(f"Deduplicating (Hamming ≤ {HAMMING_THRESH})...")
-    for i in tqdm(range(len(paths)), unit="img"):
-        if paths[i] in to_remove:
-            continue
-        for j in range(i + 1, len(paths)):
-            if paths[j] in to_remove:
-                continue
-            if hashes[paths[i]] - hashes[paths[j]] <= HAMMING_THRESH:
-                to_remove.add(paths[j])
-    kept = [p for p in paths if p not in to_remove]
-    print(f"Removed {len(to_remove)} near-duplicates → {len(kept)} images kept")
-    return kept
 
 
 def copy_to_staging(paths):

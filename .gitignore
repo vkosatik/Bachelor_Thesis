@@ -28,3 +28,6 @@ bin/
 dataset/anonymous_60k_user_info
 
 .DS_Store
+
+.idea
+.venv

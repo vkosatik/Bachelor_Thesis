@@ -1,4 +1,4 @@
-# Stratified pair sampling for instance confounder analysis.
+# Stratified pair sampling for instance-specific analysis.
 # Produces 4 files of N_PAIRS each:
 #   rq1_same_instance_connected.csv
 #   rq1_same_instance_disconnected.csv

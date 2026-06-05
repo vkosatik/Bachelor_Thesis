@@ -1,8 +1,9 @@
-# RQ1 confounder analysis: does visual homophily persist when controlling for Mastodon instance?
+# Additional check for rq1:
+# Does visual homophily persist when controlling for Mastodon instance?
 #
 # Mastodon users from the same instance share a community/visual culture independent of
 # social ties. If the RQ1 signal is driven by instance membership rather than individual
-# follow relationships, it should vanish or weaken in cross-instance connected pairs.
+# follow relationships, it shouldn't be noticeable in cross-instance connected pairs.
 #
 # Uses stratified pairs from sample_pairs_instance.py: 10k same-instance connected,
 # 10k same-instance disconnected, 10k cross-instance connected, 10k cross-instance

@@ -1,5 +1,5 @@
-# Embed synthetic IO accounts with CLIP (ViT-B/32), same pipeline as embed_clip_60k.py.
-# Mean-pools per-image embeddings to one L2-normalised 512d vector per account.
+# Embed synthetic IO accounts with CLIP (ViT-B/32), same pipeline as used in embed_clip_60k.py.
+# Mean-pools per-image embeddings to one L2-normalised 512d vector per image.
 #
 # Output:
 #   /Volumes/.../RQ3_Synthetic/embeddings/rq3_synthetic_embeddings.npz

@@ -1,7 +1,7 @@
 # RQ2 - FAISS Benchmarking
 # Sweeps IVF (nlist x nprobe) and HNSW (M x efSearch) on FediData CLIP user embeddings
 # Ground truth: IndexFlatIP (exact cosine search after L2 normalisation)
-# Outputs: rq2_results.npz with recall@K and QPS for every config
+# Outputs: rq2_results.npz with recall@K and QPS for every config ran
 
 import time
 from pathlib import Path
@@ -15,7 +15,7 @@ OUT_NPZ    = Path(__file__).parent / "rq2_results.npz"
 K             = 10
 N_QUERIES     = 1_000
 SEED          = 42
-N_TIMING_RUNS = 5   # repeat each search, keep best time to reduce jitter
+N_TIMING_RUNS = 5   # repeat each search, keep best time to reduce OS jitter
 
 NLIST_VALUES  = [64, 128, 256, 512, 1024]
 NPROBE_VALUES = [1, 2, 4, 8, 16, 32, 64, 128]
@@ -41,6 +41,7 @@ def build_user_vectors(embeddings: np.ndarray, user_ids: np.ndarray):
 
 def exclude_self(ids: np.ndarray, query_indices: np.ndarray, k: int) -> np.ndarray:
     """Remove the query's own index from each result row, return top-k remainder."""
+    # this is done because initially the query itself was poisoning results
     out = np.full((len(ids), k), -1, dtype=np.int64)
     for i, (row, qidx) in enumerate(zip(ids, query_indices)):
         filtered = row[row != qidx]
@@ -79,6 +80,8 @@ def timed_search(index, queries: np.ndarray, k: int, n_runs: int = N_TIMING_RUNS
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main():
+    # check whether embeddings are done since I reran them multiple times while also trying out
+    # scripts in parallel
     if not EMBEDDINGS.exists():
         raise FileNotFoundError(
             f"Embeddings not found at {EMBEDDINGS}\n"

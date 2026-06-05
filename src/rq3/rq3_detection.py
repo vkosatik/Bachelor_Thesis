@@ -2,10 +2,10 @@
 #
 # For each combo (n_accounts, n_images, follow_rate):
 #   - Select first n_accounts synthetic accounts
-#   - Mean-pool first n_images per account → one 512d vector per account
+#   - Mean-pool first n_images into one 512d vector per account
 #   - Build merged FAISS HNSW index (all real users + synthetic accounts)
 #   - For each synthetic account query top-K neighbours
-#   - Flag synthetic-synthetic pairs where sim > CLIP_THRESH AND no follow edge
+#   - Flag synthetic-synthetic pairs where sim > CLIP_THRESH AND no follow edge between the two
 #   - Compute CLIP recall: flagged / total unconnected synthetic-synthetic pairs
 #   - Compute pHash recall: account pairs with ≥1 image pair Hamming ≤ 10
 #   - Record FP rate: fraction of real disconnected pairs above threshold (from RQ1)
@@ -95,7 +95,7 @@ def load_phashes():
             hashes[sid][img_idx] = imagehash.hex_to_hash(row["phash_hex"])
     return hashes
 
-
+# more elaborated on in the anomaly analysis
 def fp_rate_from_rq1():
     data = np.load(RQ1_RESULTS)
     disc = data["disc_mean_pool"]

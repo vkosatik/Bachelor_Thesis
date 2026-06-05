@@ -1,6 +1,6 @@
-# Robustness check: repeat the RQ1 analysis using only pairs where
+# This is one more robustness check: repeating the RQ1 analysis using only pairs where
 # both users appear exactly once in the connected set.
-# High-degree nodes dominate the full connected sample (one user appears 45×);
+# I discovered that high-degree nodes dominate the full connected sample (one user appears 45×);
 # this sub-analysis confirms the result does not depend on them.
 # Reads rq1_results.npz produced by rq1_homophily.py — no re-computation needed.
 
